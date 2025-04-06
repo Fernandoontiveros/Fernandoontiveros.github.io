@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Michael Ray Richardson - Blog Interactivo</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Estilos para el modal de privacidad */
+        .privacy-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            overflow: auto;
+        }
+
+        .privacy-content {
+            background-color: #f8f8f8;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 800px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            position: relative;
+            color: #333;
+        }
+
+        .privacy-content h2 {
+            color: #1a1a1a;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .privacy-content p {
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .privacy-content ul {
+            margin-bottom: 20px;
+            padding-left: 20px;
+        }
+
+        .privacy-content li {
+            margin-bottom: 8px;
+        }
+
+        .privacy-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .privacy-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .accept-btn {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        .accept-btn:hover {
+            background-color: #45a049;
+        }
+
+        .reject-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .reject-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        body.privacy-modal-open {
+            overflow: hidden;
+        }
+
+        .blur-content {
+            filter: blur(5px);
+            pointer-events: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Modal de privacidad -->
+    <div id="privacyModal" class="privacy-modal">
+        <div class="privacy-content">
+            <h2><i class="fas fa-shield-alt"></i> Aviso de Privacidad y Derechos de Autor</h2>
+            <p>Antes de acceder al contenido de este blog sobre Michael Ray Richardson, lea atentamente el siguiente aviso:</p>
+            
+            <p><strong>1. Derechos de Autor:</strong> Todas las imágenes, estadísticas e información presentada en este blog son propiedad de sus respectivos dueños:</p>
+            <ul>
+                <li>Imágenes del jugador: © NBA Properties, Inc.</li>
+                <li>Logos de la NBA: © National Basketball Association</li>
+                <li>Datos estadísticos: © NBA Media Ventures, LLC</li>
+                <li>Información biográfica: Fuentes documentadas y verificadas</li>
+            </ul>
+            
+            <p><strong>2. Uso del Material:</strong> Este contenido es solo para fines educativos y de exposición. No está autorizada su reproducción, distribución o modificación sin el consentimiento expreso de los titulares de los derechos.</p>
+            
+            <p><strong>3. Privacidad:</strong> Este sitio no recopila datos personales de los usuarios. Cualquier interacción es anónima.</p>
+            
+            <p><strong>4. Advertencia:</strong> Algunas secciones contienen información sobre consumo de sustancias con fines educativos sobre sus efectos nocivos.</p>
+            
+            <div class="privacy-buttons">
+                <button id="acceptPrivacy" class="privacy-btn accept-btn"><i class="fas fa-check"></i> Aceptar y Continuar</button>
+                <button id="rejectPrivacy" class="privacy-btn reject-btn"><i class="fas fa-times"></i> Rechazar y Salir</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido principal (inicialmente oculto/blureado) -->
+    <div id="mainContent">
+    <!-- Menú fijo superior -->
+    <header class="fixed-header">
+        <div class="menu-container">
+            <img src="https://cdn.nba.com/logos/nba/nba-logoman-75-word_white.svg" alt="NBA Logo" class="logo left-logo">
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="#biografia">Biografía</a></li>
+                    <li><a href="#carrera">Carrera</a></li>
+                    <li><a href="#logros">Logros</a></li>
+                    <li><a href="#drogas">Efectos de las drogas</a></li>
+                    <li><a href="#galeria">Galería</a></li>
+                    <li><a href="juego.html" class="game-link"><img src="C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\WhatsApp Image 2025-03-23 at 12.02.58 AM.jpeg" alt="Juego" class="game-icon"> Juego</a></li>
+                    <li><a href="cerebro.html" class="cerebro"><alt="Cerebro" class="cerebro"> Cerebro</a></li>
+
+                </ul>
+            </nav>
+            <img src="C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\WhatsApp Image 2025-03-23 at 12.00.38 AM.jpeg" alt="UTC Logo" class="logo right-logo">
+        </div>
+    </header>
+
+    <!-- Contenido principal -->
+    <main class="content">
+        <!-- Banner hero -->
+        <section class="hero">
+            <h1>MICHAEL RAY RICHARDSON</h1>
+            <p class="subtitle">De estrella de la NBA a leyenda del baloncesto europeo</p>
+            
+        </section>
+
+        <!-- Biografía -->
+        <section id="biografia" class="section">
+            <h2><i class="fas fa-user"></i> Biografía</h2>
+            <div class="bio-content">
+                <img src="https://cdn.nba.com/headshots/nba/latest/1040x760/77142.png" alt="Michael Ray Richardson joven" class="bio-img">
+                <div class="bio-text">
+                    <p><strong>Michael Ray Richardson</strong> (nacido el 11 de abril de 1955) es un exjugador y entrenador de baloncesto profesional estadounidense. Richardson jugó a nivel universitario en la Universidad de Montana. Fue reclutado para la escuela de la Conferencia Big Sky por el entrenador del Salón de la Fama Jud Heathcote después de que el amigo de Richardson, jugador de baloncesto de Denver, David Berry, visitara la escuela.</p>
+                    
+                    <div class="stats-box">
+                        <h3>Estadísticas en Montana</h3>
+                        <ul>
+                            <li><strong>17.1</strong> Puntos por partido</li>
+                            <li><strong>6.3</strong> Rebotes por partido</li>
+                            <li><strong>3.7</strong> Asistencias por partido</li>
+                            <li><strong>49%</strong> En tiros de campo</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Carrera NBA -->
+        <section id="carrera" class="section dark-section">
+            <h2><i class="fas fa-basketball-ball"></i> Carrera en la NBA</h2>
+            
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-year">1978-1982</div>
+                    <div class="timeline-content">
+                        <h3>New York Knicks</h3>
+                        <p>Los New York Knicks seleccionaron a Richardson con la cuarta selección general del draft de la NBA de 1978. En su segundo año, Richardson se convirtió en el tercer jugador en la historia de la NBA en registrar 18 triples-dobles, la segunda mayor cantidad en la historia de la franquicia.</p>
+                        <p>Durante la temporada 1980-81 de la NBA, Richardson hizo su segundo Juego de las Estrellas, anotando 11 puntos, capturando 5 rebotes y registrando 4 robos en una victoria de la Conferencia Este por 123-120.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1982-1983</div>
+                    <div class="timeline-content">
+                        <h3>Golden State Warriors</h3>
+                        <p>Al comienzo de la temporada 1982-83, el 22 de octubre de 1982, Richardson fue traspasado a los Golden State Warriors a cambio de Bernard King. El 5 de febrero de 1983, Richardson registró un doble-doble con 10 puntos y 11 asistencias, además de sumar 9 robos, en una victoria por 106-102 sobre los San Antonio Spurs.</p>
+                    </div>
+                </div>
+                
+                <div class="timeline-item">
+                    <div class="timeline-year">1983-1986</div>
+                    <div class="timeline-content">
+                        <h3>New Jersey Nets</h3>
+                        <p>Después de jugar solo 33 partidos para los Warriors, Richardson fue traspasado a los New Jersey Nets. El 25 de febrero de 1986, el comisionado de la NBA, David Stern, suspendió de por vida a Richardson por tres violaciones a la política antidopaje de la liga.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Logros -->
+        <section id="logros" class="section">
+            <h2><i class="fas fa-trophy"></i> Logros y Reconocimientos</h2>
+            <div class="achievements-grid">
+                <div class="achievement-card">
+                    <i class="fas fa-star"></i>
+                    <h3>4 veces All-Star</h3>
+                    <p>Seleccionado para el Juego de las Estrellas en 4 ocasiones</p>
+                </div>
+                <div class="achievement-card">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>2 veces Mejor Equipo Defensivo</h3>
+                    <p>Incluido en el Mejor Equipo Defensivo de la NBA en dos ocasiones</p>
+                </div>
+                <div class="achievement-card">
+                    <i class="fas fa-hand-paper"></i>
+                    <h3>3 veces líder en robos</h3>
+                    <p>Máximo recuperador de la NBA en tres temporadas</p>
+                </div>
+                <div class="achievement-card">
+                    <i class="fas fa-basketball-ball"></i>
+                    <h3>Líder en asistencias</h3>
+                    <p>Máximo asistente de la NBA en una temporada</p>
+                </div>
+            </div>
+            
+            <div class="note-box">
+                <h3>Nota sobre el Uso de Marihuana en la NBA</h3>
+                <p>Según el nuevo convenio colectivo de trabajo que firmaron la NBA y la Asociación de Jugadores, ningún jugador será sancionado por el uso de marihuana en forma recreativa. Anteriormente, se realizaban controles anuales a los basquetbolistas y en caso de dar positivo por THC a lo largo de tres estudios había suspensión de cinco partidos contra el infractor.</p>
+            </div>
+        </section>
+
+        <!-- Efectos de las drogas -->
+        <section id="drogas" class="section dark-section">
+            <h2><i class="fas fa-exclamation-triangle"></i> Efectos de la Cocaína</h2>
+            
+            <div class="effects-container">
+                <div class="effect-card">
+                    <div class="effect-icon"><i class="fas fa-eye"></i></div>
+                    <h3>Vista</h3>
+                    <p>Puede causar visión borrosa, hipersensibilidad a la luz y movimientos oculares descoordinados. En algunos casos, puede generar alucinaciones visuales.</p>
+                </div>
+                
+                <div class="effect-card">
+                    <div class="effect-icon"><i class="fas fa-ear-listen"></i></div>
+                    <h3>Oído</h3>
+                    <p>Puede aumentar la sensibilidad a los sonidos o provocar zumbidos en los oídos (tinnitus). En casos más graves, puede generar alucinaciones auditivas.</p>
+                </div>
+                
+                <div class="effect-card">
+                    <div class="effect-icon"><i class="fas fa-nose"></i></div>
+                    <h3>Olfato</h3>
+                    <p>Si se consume por vía nasal, puede dañar la mucosa nasal, reduciendo la capacidad de percibir olores e incluso causando perforación del tabique con el uso prolongado.</p>
+                </div>
+                
+                <div class="effect-card">
+                    <div class="effect-icon"><i class="fas fa-mouth"></i></div>
+                    <h3>Gusto</h3>
+                    <p>Puede provocar insensibilidad en la boca y la lengua debido a su efecto anestésico. A largo plazo, puede afectar el sentido del gusto.</p>
+                </div>
+                
+                <div class="effect-card">
+                    <div class="effect-icon"><i class="fas fa-hand"></i></div>
+                    <h3>Tacto</h3>
+                    <p>Puede generar sensaciones anormales como entumecimiento, hormigueo o una falsa sensación de bichos caminando sobre la piel (conocida como "formicación").</p>
+                </div>
+            </div>
+            
+            <div class="brain-section">
+                <h3>Efectos en el Cerebro</h3>
+                <div class="brain-content">
+                    <img src="C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\OIP.jpg" alt="Efectos de la cocaína en el cerebro" class="brain-img">
+                    <div class="brain-text">
+                        <p>La cocaína afecta varias partes del cerebro y el cuerpo, incluyendo el sistema nervioso central, el corazón, los pulmones y el sistema digestivo. Puede causar problemas cardíacos, derrames cerebrales, convulsiones y daño hepático.</p>
+                        <ul>
+                            <li>Altera los niveles de dopamina en el cerebro</li>
+                            <li>Puede causar paranoia y ansiedad</li>
+                            <li>Produce deterioro cognitivo con uso prolongado</li>
+                            <li>Aumenta el riesgo de accidentes cerebrovasculares</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Galería -->
+        <section id="galeria" class="section">
+            <h2><i class="fas fa-camera"></i> Galería</h2>
+            <div class="gallery-grid">
+                <img src="C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\gettyimages-51752268-612x612.jpg" alt="Michael Ray Richardson en los Knicks" class="gallery-item">
+                <img src="C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\micheal_ray_richardson_1_nba_newyork_knicks.jpg" alt="Richardson en acción" class="gallery-item">
+                <img src="C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\Michael-Ray-Richardson.jpg" alt="Richardson defendiendo" class="gallery-item">
+                <img src="C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\m-r-richardson.jpg" alt="Richardson en Europa" class="gallery-item">
+                <img src="C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\richami01.jpg" alt="Richardson retrato" class="gallery-item">
+                <img src="C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\gettyimages-96631485-612x612.jpg" alt="Richardson en la actualidad" class="gallery-item">
+            </div>
+        </section>
+
+        <!-- Video modal -->
+        <div id="video-modal" class="modal">
+            <div class="modal-content">
+                <span class="close-btn">&times;</span>
+                <iframe id="modal-video" width="560" height="315" src="" frameborder="0" allowfullscreen></iframe>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2023 Blog Interactivo de Michael Ray Richardson Toda infoformacion esta reservada para el uso de los expocitores</p>
+        </div>
+    </footer>
+    <script>
+        // Mostrar el modal al cargar la página
+        document.addEventListener('DOMContentLoaded', function() {
+            const privacyModal = document.getElementById('privacyModal');
+            const mainContent = document.getElementById('mainContent');
+            const acceptBtn = document.getElementById('acceptPrivacy');
+            const rejectBtn = document.getElementById('rejectPrivacy');
+            
+            // Mostrar modal y deshabilitar el contenido principal
+            privacyModal.style.display = 'block';
+            document.body.classList.add('privacy-modal-open');
+            mainContent.classList.add('blur-content');
+            
+            // Aceptar privacidad
+            acceptBtn.addEventListener('click', function() {
+                privacyModal.style.display = 'none';
+                document.body.classList.remove('privacy-modal-open');
+                mainContent.classList.remove('blur-content');
+                
+                // Guardar aceptación en localStorage para no mostrar de nuevo
+                localStorage.setItem('privacyAccepted', 'true');
+            });
+            
+            // Rechazar privacidad
+            rejectBtn.addEventListener('click', function() {
+                // Redirigir a una página de salida o cerrar la pestaña
+                window.location.href = 'https://www.google.com';
+            });
+            
+            // Verificar si ya aceptó antes (opcional)
+            if(localStorage.getItem('privacyAccepted') === 'true') {
+                privacyModal.style.display = 'none';
+                document.body.classList.remove('privacy-modal-open');
+                mainContent.classList.remove('blur-content');
+            }
+        });
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baloncesto: Efectos de la Cocaína</title>
+    <style>
+        :root {
+            --healthy-color: #3498db;
+            --affected-color: #e74c3c;
+            --court-color: #196F3D;
+            --board-color: #FDFEFE;
+            --hoop-color: #E67E22;
+            --text-color: #2C3E50;
+            --shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        h1 {
+            color: var(--text-color);
+            margin: 20px 0;
+            text-align: center;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            background: linear-gradient(to right, var(--healthy-color), var(--affected-color));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        
+        .view-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .game-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .player-container {
+            width: 480px;
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            padding: 25px;
+            text-align: center;
+            transition: transform 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .player-container:hover {
+            transform: translateY(-5px);
+        }
+        
+        .player-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: var(--healthy-color);
+        }
+        
+        .player-container.affected::before {
+            background: var(--affected-color);
+        }
+        
+        .player-title {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 10px;
+        }
+        
+        .player-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--healthy-color);
+        }
+        
+        .player-title.affected::after {
+            background: var(--affected-color);
+        }
+        
+        .basketball-court {
+            width: 100%;
+            height: 350px;
+            background-color: var(--court-color);
+            position: relative;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.3);
+            border: 4px solid #5D4037;
+        }
+        
+        .court-lines {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 5px;
+        }
+        
+        .center-line {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.5);
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .hoop {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            border: 4px solid var(--hoop-color);
+            border-radius: 50%;
+            top: 60px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hoop-left {
+            left: 30px;
+        }
+        
+        .hoop-right {
+            right: 30px;
+        }
+        
+        .backboard {
+            position: absolute;
+            width: 12px;
+            height: 100px;
+            background-color: var(--board-color);
+            top: 40px;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .backboard-left {
+            left: 100px;
+        }
+        
+        .backboard-right {
+            right: 100px;
+        }
+        
+        .player {
+            position: absolute;
+            width: 50px;
+            height: 100px;
+            bottom: 0;
+            transition: all 0.3s ease;
+            z-index: 10;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: bottom;
+        }
+        
+        .healthy-player {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100"><circle cx="25" cy="25" r="15" fill="%233498db"/><rect x="15" y="40" width="20" height="50" fill="%233498db"/><rect x="10" y="40" width="5" height="30" fill="%233498db"/><rect x="35" y="40" width="5" height="30" fill="%233498db"/><rect x="20" y="90" width="5" height="20" fill="%233498db" transform="rotate(10, 25, 100)"/><rect x="25" y="90" width="5" height="20" fill="%233498db" transform="rotate(-10, 25, 100)"/></svg>');
+        }
+        
+        .affected-player {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 100"><circle cx="25" cy="25" r="15" fill="%23e74c3c"/><rect x="15" y="40" width="20" height="50" fill="%23e74c3c"/><rect x="10" y="40" width="5" height="30" fill="%23e74c3c"/><rect x="35" y="40" width="5" height="30" fill="%23e74c3c"/><rect x="20" y="90" width="5" height="20" fill="%23e74c3c" transform="rotate(20, 25, 100)"/><rect x="25" y="90" width="5" height="20" fill="%23e74c3c" transform="rotate(-20, 25, 100)"/></svg>');
+            animation: shaky 0.5s infinite alternate;
+        }
+        
+        @keyframes shaky {
+            0% { transform: translateX(0) rotate(0deg); }
+            25% { transform: translateX(-3px) rotate(-1deg); }
+            50% { transform: translateX(3px) rotate(1deg); }
+            75% { transform: translateX(-3px) rotate(-1deg); }
+            100% { transform: translateX(3px) rotate(1deg); }
+        }
+        
+        .ball {
+            position: absolute;
+            width: 25px;
+            height: 25px;
+            background-color: #e67e22;
+            border-radius: 50%;
+            bottom: 100px;
+            transition: all 0.5s cubic-bezier(0.17, 0.67, 0.21, 0.99);
+            z-index: 5;
+            background-image: radial-gradient(circle at 30% 30%, #f1c40f, #e67e22);
+            box-shadow: inset -3px -3px 5px rgba(0, 0, 0, 0.3);
+        }
+        
+        .ball-shadow {
+            position: absolute;
+            width: 25px;
+            height: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 50%;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%) scale(0.8);
+            filter: blur(2px);
+            transition: all 0.5s cubic-bezier(0.17, 0.67, 0.21, 0.99);
+            z-index: 4;
+        }
+        
+        .score-display {
+            font-size: 1.8rem;
+            margin: 15px 0;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .score-value {
+            font-size: 2.2rem;
+            min-width: 50px;
+            display: inline-block;
+        }
+        
+        .controls {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        button {
+            background: linear-gradient(145deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            min-width: 120px;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+        }
+        
+        button:active {
+            transform: translateY(1px);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        button::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 5px;
+            height: 5px;
+            background: rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            border-radius: 100%;
+            transform: scale(1, 1) translate(-50%);
+            transform-origin: 50% 50%;
+        }
+        
+        button:focus:not(:active)::after {
+            animation: ripple 0.6s ease-out;
+        }
+        
+        @keyframes ripple {
+            0% {
+                transform: scale(0, 0);
+                opacity: 0.5;
+            }
+            100% {
+                transform: scale(20, 20);
+                opacity: 0;
+            }
+        }
+        
+        .affected-btn {
+            background: linear-gradient(145deg, #e74c3c, #c0392b);
+        }
+        
+        .stats {
+            margin-top: 25px;
+            text-align: left;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stats h3 {
+            margin-bottom: 10px;
+            color: var(--text-color);
+            font-size: 1.2rem;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+        }
+        
+        .stats p {
+            margin: 8px 0;
+            display: flex;
+            align-items: center;
+        }
+        
+        .stats i {
+            width: 24px;
+            height: 24px;
+            margin-right: 10px;
+            background-size: contain;
+            display: inline-block;
+        }
+        
+        .switch-view {
+            margin: 30px 0;
+            background: linear-gradient(145deg, #9b59b6, #8e44ad);
+            padding: 15px 30px;
+            font-size: 1.2rem;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .effects-info {
+            background: linear-gradient(145deg, #fffde7, #fff9c4);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            max-width: 900px;
+            text-align: left;
+            box-shadow: var(--shadow);
+            border-left: 6px solid #fbc02d;
+        }
+        
+        .effects-info h3 {
+            color: #d35400;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .effects-info ul {
+            list-style-type: none;
+        }
+        
+        .effects-info li {
+            margin-bottom: 12px;
+            padding-left: 30px;
+            position: relative;
+            line-height: 1.5;
+        }
+        
+        .effects-info li::before {
+            content: '⚠️';
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .effects-info strong {
+            color: #c0392b;
+        }
+        
+        .timer {
+            font-size: 1.2rem;
+            margin-bottom: 15px;
+            font-weight: bold;
+            color: var(--text-color);
+            background: rgba(255, 255, 255, 0.8);
+            padding: 8px 15px;
+            border-radius: 50px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        
+        .game-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 20px 40px;
+            border-radius: 10px;
+            font-size: 1.8rem;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            pointer-events: none;
+        }
+        
+        .visible {
+            opacity: 1;
+        }
+        
+        @media (max-width: 768px) {
+            .game-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .player-container {
+                width: 100%;
+                max-width: 400px;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Baloncesto: Jugador Sano vs. Jugador Afectado por Cocaína</h1>
+    
+    <div class="timer" id="game-timer">Tiempo: 60</div>
+    
+    <div class="game-message" id="game-message"></div>
+    
+    <div class="view-container" id="comparison-view">
+        <div class="game-container">
+            <div class="player-container">
+                <div class="player-title healthy">Jugador Sano</div>
+                <div class="basketball-court">
+                    <div class="court-lines"></div>
+                    <div class="center-line"></div>
+                    <div class="hoop hoop-left"></div>
+                    <div class="backboard backboard-left"></div>
+                    <div class="player healthy-player" id="healthy-player"></div>
+                    <div class="ball" id="healthy-ball"></div>
+                    <div class="ball-shadow" id="healthy-shadow"></div>
+                </div>
+                <div class="score-display">
+                    <span>🏀 Puntos:</span>
+                    <span class="score-value" id="healthy-score">0</span>
+                </div>
+                <div class="controls">
+                    <button id="healthy-shoot">🏀 Disparar</button>
+                    <button id="healthy-move">↔️ Mover</button>
+                    <button id="healthy-dribble">🏀 Driblar</button>
+                </div>
+                <div class="stats">
+                    <h3>Estadísticas del Jugador</h3>
+                    <p><span>🎯</span> Precisión: <strong>70%</strong></p>
+                    <p><span>⏱️</span> Tiempo de reacción: <strong>Normal</strong></p>
+                    <p><span>🤸</span> Coordinación: <strong>Buena</strong></p>
+                    <p><span>💪</span> Resistencia: <strong>Alta</strong></p>
+                </div>
+            </div>
+            
+            <div class="player-container affected">
+                <div class="player-title affected">Jugador Afectado</div>
+                <div class="basketball-court">
+                    <div class="court-lines"></div>
+                    <div class="center-line"></div>
+                    <div class="hoop hoop-right"></div>
+                    <div class="backboard backboard-right"></div>
+                    <div class="player affected-player" id="affected-player"></div>
+                    <div class="ball" id="affected-ball"></div>
+                    <div class="ball-shadow" id="affected-shadow"></div>
+                </div>
+                <div class="score-display">
+                    <span>🏀 Puntos:</span>
+                    <span class="score-value" id="affected-score">0</span>
+                </div>
+                <div class="controls">
+                    <button id="affected-shoot" class="affected-btn">🏀 Disparar</button>
+                    <button id="affected-move" class="affected-btn">↔️ Mover</button>
+                    <button id="affected-dribble" class="affected-btn">🏀 Driblar</button>
+                </div>
+                <div class="stats">
+                    <h3>Estadísticas del Jugador</h3>
+                    <p><span>🎯</span> Precisión: <strong>30%</strong></p>
+                    <p><span>⏱️</span> Tiempo de reacción: <strong>Irregular</strong></p>
+                    <p><span>🤸</span> Coordinación: <strong>Deficiente</strong></p>
+                    <p><span>💪</span> Resistencia: <strong>Baja (fatiga rápida)</strong></p>
+                </div>
+            </div>
+        </div>
+        
+        <button class="switch-view" id="show-single-view">🔍 Ver Jugadores por Separado</button>
+        
+        <div class="effects-info">
+            <h3>⚠️ Efectos de la Cocaína en el Rendimiento Deportivo:</h3>
+            <ul>
+                <li><strong>Coordinación reducida:</strong> La cocaína afecta el sistema nervioso, dificultando movimientos precisos y la coordinación ojo-mano.</li>
+                <li><strong>Juicio deteriorado:</strong> Disminuye la capacidad de tomar decisiones rápidas y acertadas durante el juego.</li>
+                <li><strong>Falsa confianza:</strong> Aunque inicialmente puede dar sensación de mayor energía, el rendimiento real disminuye notablemente.</li>
+                <li><strong>Problemas cardiovasculares:</strong> Aumenta drásticamente el riesgo de ataques al corazón durante el esfuerzo físico.</li>
+                <li><strong>Deshidratación:</strong> La cocaína eleva la temperatura corporal y reduce la sensación de sed, aumentando el riesgo de golpe de calor.</li>
+                <li><strong>Agotamiento prematuro:</strong> Después del efecto inicial, causa fatiga extrema que impide mantener el rendimiento.</li>
+            </ul>
+        </div>
+    </div>
+    
+    <div class="view-container" id="single-view" class="hidden">
+        <div class="game-container">
+            <div class="player-container" id="single-player-container">
+                <div class="player-title" id="single-player-title">Jugador</div>
+                <div class="basketball-court">
+                    <div class="court-lines"></div>
+                    <div class="center-line"></div>
+                    <div class="hoop hoop-left"></div>
+                    <div class="backboard backboard-left"></div>
+                    <div class="player" id="single-player"></div>
+                    <div class="ball" id="single-ball"></div>
+                    <div class="ball-shadow" id="single-shadow"></div>
+                </div>
+                <div class="score-display">
+                    <span>🏀 Puntos:</span>
+                    <span class="score-value" id="single-score">0</span>
+                </div>
+                <div class="controls">
+                    <button id="single-shoot">🏀 Disparar</button>
+                    <button id="single-move">↔️ Mover</button>
+                    <button id="single-dribble">🏀 Driblar</button>
+                </div>
+                <div class="stats" id="single-stats">
+                    <!-- Stats will be filled by JavaScript -->
+                </div>
+            </div>
+        </div>
+        
+        <div class="controls" style="text-align: center; margin-top: 20px;">
+            <button id="switch-to-healthy">👨 Jugador Sano</button>
+            <button id="switch-to-affected">👤 Jugador Afectado</button>
+            <button class="switch-view" id="show-comparison-view">🔄 Ver Comparación</button>
+        </div>
+    </div>
+    
+    <audio id="bounce-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-ball-bouncing-2083.mp3" preload="auto"></audio>
+    <audio id="swish-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-basketball-ball-bouncing-2085.mp3" preload="auto"></audio>
+    <audio id="miss-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-wood-hard-hit-2182.mp3" preload="auto"></audio>
+    <audio id="move-sound" src="https://assets.mixkit.co/sfx/preview/mixkit-fast-running-on-hard-ground-2580.mp3" preload="auto"></audio>
+    
+    <script>
+        // Enhanced Game State
+        const gameState = {
+            healthy: {
+                score: 0,
+                position: 150,
+                accuracy: 0.7,
+                speed: 'normal',
+                stamina: 100,
+                consecutiveShots: 0,
+                dribbleCount: 0
+            },
+            affected: {
+                score: 0,
+                position: 150,
+                accuracy: 0.3,
+                speed: 'erratic',
+                stamina: 60,
+                consecutiveShots: 0,
+                dribbleCount: 0,
+                lastShotTime: 0
+            },
+            singleView: {
+                currentPlayer: 'healthy',
+                score: 0
+            },
+            gameTime: 60,
+            gameActive: true,
+            sounds: {
+                bounce: null,
+                swish: null,
+                miss: null,
+                move: null
+            }
+        };
+        
+        // DOM elements
+        const elements = {
+            comparisonView: document.getElementById('comparison-view'),
+            singleView: document.getElementById('single-view'),
+            showSingleView: document.getElementById('show-single-view'),
+            showComparisonView: document.getElementById('show-comparison-view'),
+            switchToHealthy: document.getElementById('switch-to-healthy'),
+            switchToAffected: document.getElementById('switch-to-affected'),
+            gameTimer: document.getElementById('game-timer'),
+            gameMessage: document.getElementById('game-message'),
+            
+            // Healthy player elements
+            healthyScore: document.getElementById('healthy-score'),
+            healthyShoot: document.getElementById('healthy-shoot'),
+            healthyMove: document.getElementById('healthy-move'),
+            healthyDribble: document.getElementById('healthy-dribble'),
+            healthyPlayer: document.getElementById('healthy-player'),
+            healthyBall: document.getElementById('healthy-ball'),
+            healthyShadow: document.getElementById('healthy-shadow'),
+            
+            // Affected player elements
+            affectedScore: document.getElementById('affected-score'),
+            affectedShoot: document.getElementById('affected-shoot'),
+            affectedMove: document.getElementById('affected-move'),
+            affectedDribble: document.getElementById('affected-dribble'),
+            affectedPlayer: document.getElementById('affected-player'),
+            affectedBall: document.getElementById('affected-ball'),
+            affectedShadow: document.getElementById('affected-shadow'),
+            
+            // Single view elements
+            singlePlayerTitle: document.getElementById('single-player-title'),
+            singleScore: document.getElementById('single-score'),
+            singleShoot: document.getElementById('single-shoot'),
+            singleMove: document.getElementById('single-move'),
+            singleDribble: document.getElementById('single-dribble'),
+            singlePlayer: document.getElementById('single-player'),
+            singleBall: document.getElementById('single-ball'),
+            singleShadow: document.getElementById('single-shadow'),
+            singleStats: document.getElementById('single-stats'),
+            singlePlayerContainer: document.getElementById('single-player-container')
+        };
+        
+        // Initialize sounds
+        function initSounds() {
+            gameState.sounds.bounce = document.getElementById('bounce-sound');
+            gameState.sounds.swish = document.getElementById('swish-sound');
+            gameState.sounds.miss = document.getElementById('miss-sound');
+            gameState.sounds.move = document.getElementById('move-sound');
+            
+            // Set volume
+            gameState.sounds.bounce.volume = 0.4;
+            gameState.sounds.swish.volume = 0.6;
+            gameState.sounds.miss.volume = 0.3;
+            gameState.sounds.move.volume = 0.2;
+        }
+        
+        // Event listeners
+        function setupEventListeners() {
+            // View switching
+            elements.showSingleView.addEventListener('click', () => {
+                elements.comparisonView.classList.add('hidden');
+                elements.singleView.classList.remove('hidden');
+                updateSingleView();
+            });
+            
+            elements.showComparisonView.addEventListener('click', () => {
+                elements.singleView.classList.add('hidden');
+                elements.comparisonView.classList.remove('hidden');
+            });
+            
+            elements.switchToHealthy.addEventListener('click', () => {
+                gameState.singleView.currentPlayer = 'healthy';
+                updateSingleView();
+            });
+            
+            elements.switchToAffected.addEventListener('click', () => {
+                gameState.singleView.currentPlayer = 'affected';
+                updateSingleView();
+            });
+            
+            // Healthy player controls
+            elements.healthyShoot.addEventListener('click', () => shoot('healthy'));
+            elements.healthyMove.addEventListener('click', () => move('healthy'));
+            elements.healthyDribble.addEventListener('click', () => dribble('healthy'));
+            
+            // Affected player controls
+            elements.affectedShoot.addEventListener('click', () => shoot('affected'));
+            elements.affectedMove.addEventListener('click', () => move('affected'));
+            elements.affectedDribble.addEventListener('click', () => dribble('affected'));
+            
+            // Single view controls
+            elements.singleShoot.addEventListener('click', () => {
+                shoot(gameState.singleView.currentPlayer);
+                updateSingleScore();
+            });
+            
+            elements.singleMove.addEventListener('click', () => {
+                move(gameState.singleView.currentPlayer);
+            });
+            
+            elements.singleDribble.addEventListener('click', () => {
+                dribble(gameState.singleView.currentPlayer);
+            });
+        }
+        
+        // Game functions
+        function shoot(playerType) {
+            if (!gameState.gameActive) return;
+            
+            const player = playerType === 'healthy' ? 
+                { 
+                    elements: elements.healthyPlayer, 
+                    ball: elements.healthyBall, 
+                    shadow: elements.healthyShadow,
+                    score: elements.healthyScore 
+                } : 
+                playerType === 'affected' ? 
+                { 
+                    elements: elements.affectedPlayer, 
+                    ball: elements.affectedBall,
+                    shadow: elements.affectedShadow,
+                    score: elements.affectedScore 
+                } :
+                { 
+                    elements: elements.singlePlayer, 
+                    ball: elements.singleBall,
+                    shadow: elements.singleShadow,
+                    score: elements.singleScore 
+                };
+            
+            // Check stamina for affected player
+            if (playerType === 'affected') {
+                const now = Date.now();
+                if (now - gameState.affected.lastShotTime < 2000) {
+                    showMessage("¡Demasiado rápido! Pierde el control");
+                    missShot(player);
+                    return;
+                }
+                gameState.affected.lastShotTime = now;
+                
+                if (Math.random() < 0.2) {
+                    showMessage("¡Temblor incontrolable!");
+                    missShot(player);
+                    return;
+                }
+            }
+            
+            // Position ball at player's hands
+            const ball = player.ball;
+            const shadow = player.shadow;
+            const playerRect = player.elements.getBoundingClientRect();
+            const courtRect = player.elements.parentElement.getBoundingClientRect();
+            
+            const relativeLeft = playerRect.left - courtRect.left + playerRect.width/2 - 12;
+            const relativeBottom = playerRect.height - 20;
+            
+            ball.style.left = `${relativeLeft}px`;
+            ball.style.bottom = `${relativeBottom}px`;
+            shadow.style.left = `${relativeLeft}px`;
+            shadow.style.bottom = '0';
+            shadow.style.opacity = '1';
+            shadow.style.transform = 'translateX(-50%) scale(0.8)';
+            
+            ball.style.display = 'block';
+            shadow.style.display = 'block';
+            
+            // Determine if shot is successful based on accuracy
+            let isSuccessful = Math.random() < gameState[playerType === 'single' ? gameState.singleView.currentPlayer : playerType].accuracy;
+            
+            // Increase accuracy for consecutive shots (healthy player only)
+            if (playerType === 'healthy') {
+                gameState.healthy.consecutiveShots++;
+                if (gameState.healthy.consecutiveShots > 2) {
+                    isSuccessful = Math.random() < 0.85; // Hot hand effect
+                }
+            } else if (playerType === 'affected') {
+                // Decrease accuracy for consecutive shots
+                gameState.affected.consecutiveShots++;
+                if (gameState.affected.consecutiveShots > 1) {
+                    isSuccessful = Math.random() < 0.15; // Fatigue effect
+                }
+            }
+            
+            // Get hoop element
+            const hoop = playerType === 'healthy' || (playerType === 'single' && gameState.singleView.currentPlayer === 'healthy') ? 
+                document.querySelector('.hoop-left') : document.querySelector('.hoop-right');
+            const hoopRect = hoop.getBoundingClientRect();
+            
+            // Calculate trajectory
+            const controlPointY = 200 + Math.random() * 50;
+            let controlPointX;
+            let endLeft, endBottom;
+            
+            if (isSuccessful) {
+                // Successful shot - ball goes into hoop
+                endLeft = hoopRect.left - courtRect.left + hoopRect.width/2 - 12;
+                endBottom = courtRect.height - (hoopRect.top - courtRect.top) - hoopRect.height/2;
+                
+                // Control point for nice arc
+                controlPointX = relativeLeft + (endLeft - relativeLeft) * 0.5 + (Math.random() * 40 - 20);
+                
+                // Play swish sound
+                setTimeout(() => gameState.sounds.swish.play().catch(e => {}), 800);
+            } else {
+                // Missed shot - ball goes near hoop but not in
+                endLeft = hoopRect.left - courtRect.left + (hoopRect.width/2 - 12) + (Math.random() * 120 - 60);
+                endBottom = courtRect.height - (hoopRect.top - courtRect.top) - hoopRect.height/2 + 30;
+                
+                // Control point for less controlled arc
+                controlPointX = relativeLeft + (endLeft - relativeLeft) * (0.3 + Math.random() * 0.4);
+                
+                // Play miss sound
+                setTimeout(() => gameState.sounds.miss.play().catch(e => {}), 800);
+            }
+            
+            // Animate ball with Bezier curve
+            const startTime = performance.now();
+            const duration = 1000;
+            
+            function animateBall(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Quadratic Bezier curve calculation
+                const x = quadraticBezier(relativeLeft, controlPointX, endLeft, progress);
+                const y = quadraticBezier(relativeBottom, controlPointY, endBottom, progress);
+                
+                ball.style.left = `${x}px`;
+                ball.style.bottom = `${y}px`;
+                
+                // Update shadow
+                shadow.style.left = `${x}px`;
+                const shadowScale = 1 - (y / courtRect.height) * 0.8;
+                shadow.style.transform = `translateX(-50%) scale(${Math.max(0.3, shadowScale)})`;
+                shadow.style.opacity = `${1 - (y / courtRect.height) * 0.9}`;
+                
+                // Bounce effect when ball is descending
+                if (progress > 0.5) {
+                    const bounceProgress = (progress - 0.5) * 2;
+                    ball.style.transform = `scale(${1 + Math.sin(bounceProgress * Math.PI) * 0.2})`;
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animateBall);
+                } else {
+                    // Shot complete
+                    if (isSuccessful) {
+                        // Update score
+                        if (playerType === 'healthy') {
+                            gameState.healthy.score += 2;
+                            player.score.textContent = gameState.healthy.score;
+                            showMessage("¡Canasta!", playerType);
+                        } else if (playerType === 'affected') {
+                            gameState.affected.score += 2;
+                            player.score.textContent = gameState.affected.score;
+                            showMessage("¡Canasta! (Suerte)", playerType);
+                        } else {
+                            updateSingleScore();
+                        }
+                    } else {
+                        if (playerType === 'affected') {
+                            gameState.affected.consecutiveShots = 0;
+                        } else if (playerType === 'healthy') {
+                            gameState.healthy.consecutiveShots = 0;
+                        }
+                    }
+                    
+                    // Reset ball after animation
+                    setTimeout(() => {
+                        ball.style.display = 'none';
+                        shadow.style.display = 'none';
+                        ball.style.transform = 'scale(1)';
+                    }, 300);
+                }
+            }
+            
+            requestAnimationFrame(animateBall);
+            
+            // Play bounce sound during animation
+            setTimeout(() => gameState.sounds.bounce.play().catch(e => {}), 400);
+        }
+        
+        function quadraticBezier(p0, p1, p2, t) {
+            return (1-t)*(1-t)*p0 + 2*(1-t)*t*p1 + t*t*p2;
+        }
+        
+        function missShot(player) {
+            const ball = player.ball;
+            const shadow = player.shadow;
+            
+            ball.style.display = 'none';
+            shadow.style.display = 'none';
+            
+            gameState.sounds.miss.play().catch(e => {});
+            
+            if (player === elements.healthyPlayer || player === elements.singlePlayer && gameState.singleView.currentPlayer === 'healthy') {
+                gameState.healthy.consecutiveShots = 0;
+            } else {
+                gameState.affected.consecutiveShots = 0;
+            }
+        }
+        
+        function move(playerType) {
+            if (!gameState.gameActive) return;
+            
+            const player = playerType === 'healthy' ? 
+                elements.healthyPlayer : playerType === 'affected' ? 
+                elements.affectedPlayer : elements.singlePlayer;
+            
+            const courtWidth = player.parentElement.offsetWidth;
+            let moveAmount;
+            
+            // Play move sound
+            gameState.sounds.move.currentTime = 0;
+            gameState.sounds.move.play().catch(e => {});
+            
+            if (playerType === 'affected') {
+                // Erratic movement for affected player
+                moveAmount = (Math.random() * 150 - 75);
+                
+                // 30% chance of exaggerated movement
+                if (Math.random() < 0.3) {
+                    moveAmount *= 1.5;
+                    showMessage("¡Movimiento brusco!", playerType);
+                }
+            } else {
+                // Controlled movement for healthy player
+                const currentPosition = player.style.left ? parseInt(player.style.left) : 150;
+                moveAmount = Math.random() > 0.5 ? 60 : -60;
+                
+                // 20% chance of crossover move (faster)
+                if (Math.random() < 0.2) {
+                    moveAmount *= 1.5;
+                    showMessage("¡Cambio de dirección!", playerType);
+                }
+            }
+            
+            const currentLeft = player.style.left ? parseInt(player.style.left) : 150;
+            let newPosition = currentLeft + moveAmount;
+            
+            // Boundary checking
+            newPosition = Math.max(20, Math.min(newPosition, courtWidth - 70));
+            
+            player.style.left = `${newPosition}px`;
+            
+            // Update game state position
+            if (playerType === 'healthy') {
+                gameState.healthy.position = newPosition;
+            } else if (playerType === 'affected') {
+                gameState.affected.position = newPosition;
+            }
+            
+            // For affected player, sometimes make them jump erratically
+            if (playerType === 'affected' && Math.random() > 0.7) {
+                player.style.bottom = '20px';
+                setTimeout(() => {
+                    player.style.bottom = '0';
+                }, 500);
+            }
+        }
+        
+        function dribble(playerType) {
+            if (!gameState.gameActive) return;
+            
+            const player = playerType === 'healthy' ? 
+                { 
+                    elements: elements.healthyPlayer, 
+                    ball: elements.healthyBall,
+                    shadow: elements.healthyShadow
+                } : 
+                playerType === 'affected' ? 
+                { 
+                    elements: elements.affectedPlayer, 
+                    ball: elements.affectedBall,
+                    shadow: elements.affectedShadow
+                } :
+                { 
+                    elements: elements.singlePlayer, 
+                    ball: elements.singleBall,
+                    shadow: elements.singleShadow
+                };
+            
+            // Position ball at dribble position
+            const ball = player.ball;
+            const shadow = player.shadow;
+            const playerRect = player.elements.getBoundingClientRect();
+            const courtRect = player.elements.parentElement.getBoundingClientRect();
+            
+            const relativeLeft = playerRect.left - courtRect.left + playerRect.width/2 - 10;
+            const relativeBottom = 30 + Math.random() * 20;
+            
+            ball.style.left = `${relativeLeft}px`;
+            ball.style.bottom = `${relativeBottom}px`;
+            shadow.style.left = `${relativeLeft}px`;
+            shadow.style.bottom = '0';
+            shadow.style.opacity = '0.8';
+            shadow.style.transform = 'translateX(-50%) scale(0.6)';
+            
+            ball.style.display = 'block';
+            shadow.style.display = 'block';
+            
+            // Animate dribble
+            const startBottom = relativeBottom;
+            const peakBottom = 100 + (playerType === 'affected' ? Math.random() * 50 : 0);
+            const duration = playerType === 'affected' ? 300 + Math.random() * 400 : 400;
+            
+            const startTime = performance.now();
+            
+            function animateDribble(currentTime) {
+                const elapsed = currentTime - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+                
+                // Parabolic trajectory
+                const t = progress * 2;
+                let y;
+                
+                if (t < 1) {
+                    // Going up
+                    y = startBottom + (peakBottom - startBottom) * t * t;
+                } else {
+                    // Coming down
+                    const t2 = (t - 1);
+                    y = peakBottom - (peakBottom - relativeBottom) * t2 * t2;
+                }
+                
+                ball.style.bottom = `${y}px`;
+                
+                // Update shadow
+                shadow.style.opacity = `${0.8 - (y / courtRect.height) * 0.7}`;
+                const shadowScale = 0.6 - (y / courtRect.height) * 0.5;
+                shadow.style.transform = `translateX(-50%) scale(${Math.max(0.3, shadowScale)})`;
+                
+                // Squash ball at impact
+                if (progress > 0.9) {
+                    const squash = 1 + (1 - progress) * 0.5;
+                    ball.style.transform = `scaleX(${squash}) scaleY(${1/squash})`;
+                } else {
+                    ball.style.transform = 'scale(1)';
+                }
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animateDribble);
+                } else {
+                    // Dribble complete
+                    setTimeout(() => {
+                        ball.style.display = 'none';
+                        shadow.style.display = 'none';
+                    }, 50);
+                    
+                    // Play bounce sound
+                    gameState.sounds.bounce.play().catch(e => {});
+                    
+                    // Update dribble count
+                    if (playerType === 'healthy') {
+                        gameState.healthy.dribbleCount++;
+                        if (gameState.healthy.dribbleCount % 3 === 0) {
+                            showMessage("¡Buena driblada!", playerType);
+                        }
+                    } else if (playerType === 'affected') {
+                        gameState.affected.dribbleCount++;
+                        if (Math.random() < 0.3) {
+                            showMessage("¡Perdió el control!", playerType);
+                            // 30% chance to lose ball after dribble
+                            setTimeout(() => {
+                                missShot(player);
+                            }, 200);
+                        }
+                    }
+                }
+            }
+            
+            requestAnimationFrame(animateDribble);
+        }
+        
+        function updateSingleView() {
+            const isHealthy = gameState.singleView.currentPlayer === 'healthy';
+            
+            // Update title and colors
+            elements.singlePlayerTitle.textContent = isHealthy ? 'Jugador Sano' : 'Jugador Afectado';
+            elements.singlePlayerTitle.className = `player-title ${isHealthy ? 'healthy' : 'affected'}`;
+            
+            // Update player appearance
+            elements.singlePlayer.className = `player ${isHealthy ? 'healthy-player' : 'affected-player'}`;
+            elements.singlePlayerContainer.className = `player-container ${isHealthy ? '' : 'affected'}`;
+            
+            // Update score
+            updateSingleScore();
+            
+            // Update stats
+            elements.singleStats.innerHTML = isHealthy ? 
+                `<h3>Estadísticas del Jugador</h3>
+                <p><span>🎯</span> Precisión: <strong>70%</strong> (aumenta con tiros consecutivos)</p>
+                <p><span>⏱️</span> Tiempo de reacción: <strong>Normal (0.3s)</strong></p>
+                <p><span>🤸</span> Coordinación: <strong>Buena</strong></p>
+                <p><span>💪</span> Resistencia: <strong>Alta</strong></p>
+                <p><span>🧠</span> Toma de decisiones: <strong>Óptima</strong></p>` :
+                `<h3>Estadísticas del Jugador</h3>
+                <p><span>🎯</span> Precisión: <strong>30%</strong> (disminuye con tiros consecutivos)</p>
+                <p><span>⏱️</span> Tiempo de reacción: <strong>Irregular (0.1s-1.0s)</strong></p>
+                <p><span>🤸</span> Coordinación: <strong>Deficiente</strong></p>
+                <p><span>💪</span> Resistencia: <strong>Baja (fatiga rápida)</strong></p>
+                <p><span>🧠</span> Toma de decisiones: <strong>Deteriorada</strong></p>`;
+        }
+        
+        function updateSingleScore() {
+            elements.singleScore.textContent = gameState.singleView.currentPlayer === 'healthy' ? 
+                gameState.healthy.score : gameState.affected.score;
+        }
+        
+        function showMessage(message, playerType) {
+            const messageElement = elements.gameMessage;
+            messageElement.textContent = message;
+            
+            if (playerType === 'healthy') {
+                messageElement.style.color = 'var(--healthy-color)';
+            } else if (playerType === 'affected') {
+                messageElement.style.color = 'var(--affected-color)';
+            } else {
+                messageElement.style.color = 'white';
+            }
+            
+            messageElement.classList.add('visible');
+            
+            setTimeout(() => {
+                messageElement.classList.remove('visible');
+            }, 2000);
+        }
+        
+        function startGameTimer() {
+            const timerElement = elements.gameTimer;
+            gameState.gameTime = 60;
+            timerElement.textContent = `Tiempo: ${gameState.gameTime}`;
+            
+            gameState.timerInterval = setInterval(() => {
+                gameState.gameTime--;
+                timerElement.textContent = `Tiempo: ${gameState.gameTime}`;
+                
+                if (gameState.gameTime <= 0) {
+                    endGame();
+                } else if (gameState.gameTime <= 10) {
+                    timerElement.style.color = 'red';
+                    timerElement.style.animation = 'pulse 0.5s infinite alternate';
+                }
+            }, 1000);
+        }
+        
+        function endGame() {
+            clearInterval(gameState.timerInterval);
+            gameState.gameActive = false;
+            
+            // Determine winner
+            let winner;
+            if (gameState.healthy.score > gameState.affected.score) {
+                winner = 'Jugador Sano';
+                showMessage(`¡Gana el Jugador Sano! ${gameState.healthy.score}-${gameState.affected.score}`);
+            } else if (gameState.affected.score > gameState.healthy.score) {
+                winner = 'Jugador Afectado';
+                showMessage(`¡Gana el Jugador Afectado? ${gameState.affected.score}-${gameState.healthy.score} (Pero a qué costo...)`);
+            } else {
+                winner = 'Empate';
+                showMessage(`¡Empate! ${gameState.healthy.score}-${gameState.affected.score}`);
+            }
+            
+            // Add restart button
+            const restartBtn = document.createElement('button');
+            restartBtn.textContent = 'Jugar de Nuevo';
+            restartBtn.className = 'switch-view';
+            restartBtn.style.marginTop = '20px';
+            restartBtn.addEventListener('click', restartGame);
+            
+            elements.comparisonView.appendChild(restartBtn);
+        }
+        
+        function restartGame() {
+            // Reset scores
+            gameState.healthy.score = 0;
+            gameState.affected.score = 0;
+            gameState.singleView.score = 0;
+            
+            // Update displays
+            elements.healthyScore.textContent = '0';
+            elements.affectedScore.textContent = '0';
+            elements.singleScore.textContent = '0';
+            
+            // Reset game state
+            gameState.gameActive = true;
+            elements.gameTimer.style.color = '';
+            elements.gameTimer.style.animation = '';
+            
+            // Remove restart button
+            const restartBtn = document.querySelector('.switch-view:last-child');
+            if (restartBtn && restartBtn.textContent === 'Jugar de Nuevo') {
+                restartBtn.remove();
+            }
+            
+            // Start new game
+            startGameTimer();
+        }
+        
+        // Initialize game
+        function initGame() {
+            initSounds();
+            setupEventListeners();
+            updateSingleView();
+            startGameTimer();
+        }
+        
+        // Start the game when page loads
+        window.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>

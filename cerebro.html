@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Efectos de la Cocaína en el Cerebro</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f2f5;
+            color: #333;
+        }
+        
+        .header {
+            background-color: #1a5276;
+            color: white;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .brain-views {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        
+        .brain-view-container {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            border: 2px solid #1a5276;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            background-color: #fff;
+        }
+        
+        .brain-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            background-color: #f8f9fa;
+        }
+        
+        .brain-area {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: rgba(231, 76, 60, 0.6);
+            border: 2px solid #c0392b;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .brain-area:hover {
+            background-color: rgba(231, 76, 60, 0.9);
+            transform: scale(1.3);
+            box-shadow: 0 0 10px rgba(231, 76, 60, 0.8);
+        }
+        
+        .info-panel {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 25px;
+            margin-top: 20px;
+            width: 80%;
+            display: none;
+            position: relative;
+        }
+        
+        .info-panel h2 {
+            color: #1a5276;
+            border-bottom: 2px solid #1a5276;
+            padding-bottom: 10px;
+            margin-top: 0;
+        }
+        
+        .info-panel h3 {
+            color: #2874a6;
+            margin-top: 20px;
+        }
+        
+        .info-panel p {
+            line-height: 1.6;
+            text-align: justify;
+        }
+        
+        .effects-list {
+            background-color: #f9f9f9;
+            padding: 15px;
+            border-left: 4px solid #e74c3c;
+            margin: 15px 0;
+            border-radius: 0 4px 4px 0;
+        }
+        
+        .effects-list li {
+            margin-bottom: 8px;
+            padding-left: 5px;
+        }
+        
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .close-btn:hover {
+            background-color: #c0392b;
+            transform: rotate(90deg);
+            transition: all 0.3s;
+        }
+        
+        .tabs {
+            display: flex;
+            margin-bottom: 20px;
+            width: 80%;
+            border-bottom: 2px solid #1a5276;
+        }
+        
+        .tab {
+            padding: 12px 25px;
+            background-color: #eaf2f8;
+            cursor: pointer;
+            margin-right: 5px;
+            border-radius: 5px 5px 0 0;
+            font-weight: bold;
+            color: #2874a6;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background-color: #1a5276;
+            color: white;
+        }
+        
+        .tab:hover:not(.active) {
+            background-color: #d4e6f1;
+        }
+        
+        .tab-content {
+            display: none;
+            width: 80%;
+            animation: fadeIn 0.5s;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .cognitive-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        
+        .cognitive-card {
+            background-color: white;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            border-left: 4px solid #3498db;
+        }
+        
+        .cognitive-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-left-color: #2980b9;
+        }
+        
+        .cognitive-card h3 {
+            color: #2874a6;
+            margin-top: 0;
+        }
+        
+        .cognitive-card p {
+            color: #555;
+            font-size: 14px;
+        }
+        
+        .view-title {
+            text-align: center;
+            color: #1a5276;
+            margin: 10px 0;
+            font-weight: bold;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        @media (max-width: 768px) {
+            .brain-view-container {
+                width: 100%;
+                height: 300px;
+            }
+            
+            .container, .info-panel, .tabs, .tab-content {
+                width: 95%;
+            }
+            
+            .tabs {
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+            
+            .tab {
+                padding: 10px 15px;
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Efectos de la Cocaína en el Cerebro</h1>
+        <p>Modelo interactivo 3D que muestra el impacto del consumo de cocaína en diferentes áreas cerebrales</p>
+    </div>
+    
+    <div class="container">
+        <div class="tabs">
+            <div class="tab active" onclick="showTab('structural')">Estructuras Cerebrales</div>
+            <div class="tab" onclick="showTab('cognitive')">Funciones Cognitivas</div>
+        </div>
+        
+        <div id="structural" class="tab-content active">
+            <div class="brain-views">
+                <!-- Vista 1 del cerebro -->
+                <div>
+                    <div class="view-title">Vista Frontal del Cerebro</div>
+                    <div class="brain-view-container">
+                        <img src="C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\modelo 1.jpeg" alt="Modelo 3D del Cerebro - Vista frontal" class="brain-image">
+                        <!-- Áreas cerebrales con coordenadas ajustables -->
+                        <div class="brain-area" style="top: 30%; left: 40%;" onclick="showInfo('ganglios')">1</div>
+                        <div class="brain-area" style="top: 35%; left: 50%;" onclick="showInfo('caudado')">2</div>
+                        <div class="brain-area" style="top: 45%; left: 45%;" onclick="showInfo('sustancia')">3</div>
+                    </div>
+                </div>
+                
+                <!-- Vista 2 del cerebro -->
+                <div>
+                    <div class="view-title">Vista Lateral del Cerebro</div>
+                    <div class="brain-view-container">
+                        <img src="C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\modelo 2.jpeg" alt="Modelo 3D del Cerebro - Vista lateral" class="brain-image">
+                        <!-- Áreas cerebrales con coordenadas ajustables -->
+                        <div class="brain-area" style="top: 50%; left: 35%;" onclick="showInfo('amigdala')">4</div>
+                        <div class="brain-area" style="top: 25%; left: 45%;" onclick="showInfo('prefrontal')">5</div>
+                        <div class="brain-area" style="top: 40%; left: 30%;" onclick="showInfo('limbico')">6</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="info-panel" id="infoPanel">
+                <button class="close-btn" onclick="hideInfo()">✕</button>
+                <div id="infoContent"></div>
+            </div>
+        </div>
+        
+        <div id="cognitive" class="tab-content">
+            <h2>Funciones Cognitivas Afectadas por el Consumo de Cocaína</h2>
+            <p>Selecciona una función cognitiva para ver cómo se ve afectada por el consumo de cocaína:</p>
+            
+            <div class="cognitive-grid">
+                <div class="cognitive-card" onclick="showCognitiveInfo('memoria-procedimental')">
+                    <h3>Memoria Procedimental</h3>
+                    <p>Se encarga del aprendizaje y la automatización de habilidades motoras y hábitos. Fundamentales para el desempeño deportivo.</p>
+                </div>
+                
+                <div class="cognitive-card" onclick="showCognitiveInfo('atencion')">
+                    <h3>Atención y Concentración</h3>
+                    <p>Permiten enfocarse en estímulos relevantes y mantener la vigilancia durante actividades.</p>
+                </div>
+                
+                <div class="cognitive-card" onclick="showCognitiveInfo('decisiones')">
+                    <h3>Toma de Decisiones</h3>
+                    <p>Capacidad de evaluar situaciones y seleccionar la respuesta más adecuada, así como inhibir respuestas inapropiadas.</p>
+                </div>
+                
+                <div class="cognitive-card" onclick="showCognitiveInfo('memoria-trabajo')">
+                    <h3>Memoria de Trabajo</h3>
+                    <p>Permite mantener y manipular información temporalmente esencial para seguir procesos complejos.</p>
+                </div>
+                
+                <div class="cognitive-card" onclick="showCognitiveInfo('flexibilidad')">
+                    <h3>Flexibilidad Cognitiva</h3>
+                    <p>Capacidad para adaptarse a situaciones cambiantes y alternar entre diferentes tareas y estrategias.</p>
+                </div>
+                
+                <div class="cognitive-card" onclick="showCognitiveInfo('control-impulsos')">
+                    <h3>Control de Impulsos</h3>
+                    <p>Habilidad para resistir impulsos o tentaciones y pensar antes de actuar.</p>
+                </div>
+            </div>
+            
+            <div class="info-panel" id="cognitiveInfoPanel" style="display: none;">
+                <button class="close-btn" onclick="hideCognitiveInfo()">✕</button>
+                <div id="cognitiveInfoContent"></div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Información sobre las estructuras cerebrales
+        const brainData = {
+            'ganglios': {
+                title: 'Ganglios Basales',
+                description: 'Los ganglios basales son un grupo de núcleos subcorticales que regulan la motivación y las conductas relacionadas con el placer. Son esenciales para la ejecución de movimientos voluntarios y habilidades motoras complejas. Esta área del cerebro juega un papel crucial en la formación de hábitos y rutinas.',
+                effects: [
+                    'La cocaína sobreestimula esta área, generando una sensación artificial e intensa de placer',
+                    'Con el uso crónico, se reduce la capacidad de sentir placer con actividades normales (anhedonia)',
+                    'Puede producir movimientos involuntarios o temblores (discinesias)',
+                    'Altera la capacidad para ejecutar movimientos coordinados',
+                    'Contribuye al desarrollo de conductas compulsivas de búsqueda de droga'
+                ],
+            },
+            'caudado': {
+                title: 'Núcleo Caudado y Corteza Orbitofrontal',
+                description: 'Estas áreas cerebrales están profundamente involucradas en el circuito de recompensa del cerebro. El núcleo caudado participa en el aprendizaje asociativo y la formación de hábitos, mientras que la corteza orbitofrontal está relacionada con la evaluación de recompensas y la toma de decisiones. Juntas, modulan comportamientos compulsivos y la capacidad de valorar consecuencias.',
+                effects: [
+                    'La cocaína altera profundamente el funcionamiento normal del circuito de recompensa',
+                    'Provoca comportamientos compulsivos de búsqueda de la droga a pesar de consecuencias negativas',
+                    'Deteriora la capacidad para tomar decisiones racionales y evaluar riesgos',
+                    'Reduce la sensibilidad a recompensas naturales (comida, interacción social)',
+                    'Contribuye al desarrollo de patrones de pensamiento rígidos y repetitivos'
+                ],
+            },
+            'sustancia': {
+                title: 'Sustancia Blanca Cerebral',
+                description: 'La sustancia blanca está compuesta por axones mielinizados que facilitan la comunicación entre diferentes regiones del cerebro. Esta estructura es crucial para la coordinación de información entre áreas cerebrales y la ejecución de movimientos complejos. La integridad de la sustancia blanca es esencial para el funcionamiento cognitivo global.',
+                effects: [
+                    'El consumo crónico puede dañar la mielina (cubierta de los axones), ralentizando la transmisión neuronal',
+                    'Deteriora la comunicación entre áreas cerebrales, afectando la coordinación motora',
+                    'Produce déficits en la velocidad de procesamiento cognitivo',
+                    'Puede llevar a problemas de equilibrio y coordinación motora fina',
+                    'Se asocia con alteraciones en la conectividad funcional entre regiones cerebrales'
+                ],
+                image: 'C:\Users\Alan\Desktop\Proyecto Multi Disiplinario\Sustancia blanca.jpeg'
+            },
+            'amigdala': {
+                title: 'Amígdala Extendida',
+                description: 'La amígdala extendida forma parte del sistema de respuesta al estrés y procesamiento emocional. Esta estructura cumple una función clave en la generación de sensaciones como la ansiedad, la irritabilidad y la inquietud. También está involucrada en la formación de memorias emocionales y en la detección de amenazas en el ambiente.',
+                effects: [
+                    'La cocaína hiperactiva esta área, aumentando los niveles de ansiedad y paranoia',
+                    'Durante la abstinencia, provoca irritabilidad extrema e inquietud psicomotora',
+                    'Puede desencadenar ataques de pánico y respuestas exageradas al estrés',
+                    'Altera el procesamiento normal de emociones, aumentando las negativas',
+                    'Contribuye a la sensibilización al estrés y a las recaídas'
+                ],
+            },
+            'prefrontal': {
+                title: 'Corteza Prefrontal',
+                description: 'La corteza prefrontal ocupa una posición estratégica para integrar información cognitiva y emocional. Esta región orquesta respuestas complejas que requieren planificación, control de impulsos y regulación emocional. Es esencial para el funcionamiento ejecutivo, la autorregulación y el comportamiento social adecuado.',
+                effects: [
+                    'Deteriora el control de impulsos, llevando a conductas riesgosas',
+                    'Reduce la capacidad de planificación y organización a largo plazo',
+                    'Afecta el juicio y la capacidad de evaluar consecuencias de las acciones',
+                    'Disminuye la flexibilidad cognitiva y la capacidad de adaptación',
+                    'Altera la regulación emocional, aumentando la reactividad'
+                ],
+            },
+            'limbico': {
+                title: 'Sistema Límbico',
+                description: 'El sistema límbico es el centro emocional del cerebro que identifica situaciones placenteras y activa mecanismos para repetirlas. Este sistema incluye estructuras como el hipocampo, la amígdala y el núcleo accumbens. La cocaína secuestra este sistema natural de recompensa, haciendo que la droga sea percibida como el estímulo más importante para la supervivencia.',
+                effects: [
+                    'La cocaína secuestra el sistema de recompensa natural, priorizando el consumo sobre otras necesidades',
+                    'Genera una dependencia psicológica intensa mediante la asociación droga-placer',
+                    'Reduce drásticamente la capacidad de sentir placer con estímulos naturales',
+                    'Crea memorias emocionales poderosas asociadas al consumo',
+                    'Altera los mecanismos homeostáticos normales de búsqueda de placer'
+                ],
+            }
+        };
+        
+        // Información sobre funciones cognitivas
+        const cognitiveData = {
+            'memoria-procedimental': {
+                title: 'Memoria Procedimental',
+                description: 'La memoria procedimental es un tipo de memoria implícita responsable del aprendizaje y la ejecución automatizada de habilidades motoras y hábitos. Esta función es fundamental para actividades complejas como practicar deportes, tocar instrumentos musicales o realizar tareas manuales precisas. A diferencia de la memoria declarativa, opera principalmente a nivel subconsciente.',
+                effects: [
+                    'Deterioro en la ejecución fluida de movimientos automatizados',
+                    'Dificultad significativa para aprender nuevas habilidades motoras',
+                    'Pérdida de coordinación y precisión en movimientos complejos',
+                    'Mayor tiempo de reacción en actividades que antes eran automáticas',
+                    'Rigidez en la ejecución de secuencias motoras aprendidas'
+                ],
+                relatedAreas: ['Ganglios Basales', 'Cerebelo', 'Corteza Motora']
+            },
+            'atencion': {
+                title: 'Atención y Concentración',
+                description: 'La atención es el proceso cognitivo que permite seleccionar y concentrarse en estímulos relevantes mientras se ignoran distractores. La concentración se refiere a la capacidad de mantener este enfoque durante períodos prolongados. Estas funciones son esenciales para cualquier actividad que requiera procesamiento continuo de información.',
+                effects: [
+                    'Disminución notable en la capacidad de atención sostenida',
+                    'Aumento significativo de la distractibilidad ante estímulos irrelevantes',
+                    'Dificultad para dividir la atención entre múltiples tareas',
+                    'Problemas para filtrar información irrelevante en entornos complejos',
+                    'Mayor fatigabilidad mental durante tareas que requieren concentración'
+                ],
+                relatedAreas: ['Corteza Prefrontal', 'Lóbulo Parietal', 'Sistema Reticular Ascendente']
+            },
+            'decisiones': {
+                title: 'Toma de Decisiones',
+                description: 'La toma de decisiones es un proceso cognitivo superior que implica evaluar opciones, prever consecuencias y seleccionar la acción más adecuada. Este proceso integra información cognitiva y emocional, y requiere un balance entre la búsqueda de recompensa y la evitación de riesgos. Es fundamental para el comportamiento adaptativo.',
+                effects: [
+                    'Aumento marcado de la impulsividad en las elecciones',
+                    'Dificultad severa para evaluar riesgos y beneficios a largo plazo',
+                    'Tendencia a preferir recompensas inmediatas sobre beneficios futuros',
+                    'Alteración en la capacidad de aprender de experiencias negativas',
+                    'Persistencia en conductas a pesar de consecuencias adversas'
+                ],
+                relatedAreas: ['Corteza Prefrontal', 'Núcleo Caudado', 'Corteza Orbitofrontal']
+            },
+            'memoria-trabajo': {
+                title: 'Memoria de Trabajo',
+                description: 'La memoria de trabajo es un sistema de capacidad limitada que permite mantener y manipular información temporalmente. Esta función es esencial para el razonamiento, la comprensión y el aprendizaje, así como para seguir instrucciones complejas o realizar cálculos mentales. Actúa como una "pizarra mental" donde procesamos información.',
+                effects: [
+                    'Reducción significativa de la capacidad de retención de información a corto plazo',
+                    'Dificultad creciente para manipular información mentalmente',
+                    'Problemas para seguir secuencias complejas o instrucciones múltiples',
+                    'Mayor susceptibilidad a interferencias durante tareas cognitivas',
+                    'Deterioro en la capacidad de realizar cálculos o razonamientos complejos'
+                ],
+                relatedAreas: ['Corteza Prefrontal Dorsolateral', 'Lóbulo Parietal', 'Ganglios Basales']
+            },
+            'flexibilidad': {
+                title: 'Flexibilidad Cognitiva',
+                description: 'La flexibilidad cognitiva es la capacidad para adaptar el pensamiento y comportamiento a situaciones cambiantes, alternar entre tareas o conceptos, y considerar múltiples perspectivas. Esta función permite ajustarse a nuevas reglas, cambiar estrategias cuando fallan y pensar de manera creativa. Es esencial para resolver problemas novedosos.',
+                effects: [
+                    'Rigidez mental marcada y dificultad para cambiar de estrategia',
+                    'Perseveración en conductas inadecuadas aunque no sean efectivas',
+                    'Dificultad extrema para adaptarse a nuevas reglas o situaciones',
+                    'Problemas para considerar múltiples soluciones a un problema',
+                    'Resistencia al cambio y preferencia por rutinas establecidas'
+                ],
+                relatedAreas: ['Corteza Prefrontal', 'Ganglios Basales', 'Corteza Cingulada Anterior']
+            },
+            'control-impulsos': {
+                title: 'Control de Impulsos',
+                description: 'El control de impulsos es la capacidad para resistir impulsos o tentaciones inmediatas en favor de objetivos a largo plazo. Esta función inhibe respuestas automáticas o inapropiadas, permitiendo un comportamiento más reflexivo y adaptado al contexto. Es fundamental para la autorregulación y la convivencia social.',
+                effects: [
+                    'Aumento drástico de la impulsividad y conductas riesgosas',
+                    'Dificultad extrema para posponer gratificaciones inmediatas',
+                    'Tendencia a actuar sin considerar consecuencias',
+                    'Mayor probabilidad de conductas compulsivas',
+                    'Reducción en la capacidad de autocontrol en situaciones emocionales'
+                ],
+                relatedAreas: ['Corteza Prefrontal', 'Núcleo Accumbens', 'Corteza Cingulada Anterior']
+            }
+        };
+        
+        // Mostrar información de área cerebral
+        function showInfo(area) {
+            const panel = document.getElementById('infoPanel');
+            const content = document.getElementById('infoContent');
+            const data = brainData[area];
+            
+            content.innerHTML = `
+                <h2>${data.title}</h2>
+                <p>${data.description}</p>
+                <h3>Efectos del consumo de cocaína:</h3>
+                <div class="effects-list">
+                    <ul>
+                        ${data.effects.map(effect => `<li>${effect}</li>`).join('')}
+                    </ul>
+                </div>
+                ${data.image ? `<img src="images/${data.image}" alt="${data.title}" style="max-width:100%; margin-top:15px; border-radius:4px;">` : ''}
+            `;
+            
+            panel.style.display = 'block';
+            panel.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Mostrar información cognitiva
+        function showCognitiveInfo(area) {
+            const panel = document.getElementById('cognitiveInfoPanel');
+            const content = document.getElementById('cognitiveInfoContent');
+            const data = cognitiveData[area];
+            
+            content.innerHTML = `
+                <h2>${data.title}</h2>
+                <p>${data.description}</p>
+                <h3>Efectos del consumo de cocaína:</h3>
+                <div class="effects-list">
+                    <ul>
+                        ${data.effects.map(effect => `<li>${effect}</li>`).join('')}
+                    </ul>
+                </div>
+                <h3>Áreas cerebrales relacionadas:</h3>
+                <p>${data.relatedAreas.join(', ')}</p>
+            `;
+            
+            panel.style.display = 'block';
+            panel.scrollIntoView({ behavior: 'smooth' });
+        }
+        
+        // Ocultar panel de información estructural
+        function hideInfo() {
+            document.getElementById('infoPanel').style.display = 'none';
+        }
+        
+        // Ocultar panel de información cognitiva
+        function hideCognitiveInfo() {
+            document.getElementById('cognitiveInfoPanel').style.display = 'none';
+        }
+        
+        // Cambiar entre pestañas
+        function showTab(tabId) {
+            // Ocultar todas las pestañas
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Desactivar todos los botones de pestaña
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Activar la pestaña seleccionada
+            document.getElementById(tabId).classList.add('active');
+            
+            // Activar el botón de la pestaña seleccionada
+            event.currentTarget.classList.add('active');
+            
+            // Ocultar cualquier panel de información visible
+            hideInfo();
+            hideCognitiveInfo();
+        }
+        
+        // Cerrar paneles al hacer clic fuera
+        window.onclick = function(event) {
+            const infoPanel = document.getElementById('infoPanel');
+            const cognitivePanel = document.getElementById('cognitiveInfoPanel');
+            
+            if (event.target === infoPanel) {
+                infoPanel.style.display = 'none';
+            }
+            
+            if (event.target === cognitivePanel) {
+                cognitivePanel.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>
